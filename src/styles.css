@@ -1,3 +1,86 @@
 /* You can add global styles to this file, and also import other style files */
 
-@import 'tailwindcss';
+@import "tailwindcss";
+
+@theme {
+  /* Colors */
+  --color-on-tertiary: #ffffff;
+  --color-on-primary: #ffffff;
+  --color-on-secondary-fixed-variant: #394a4c;
+  --color-background: #f6fafb;
+  --color-on-secondary-fixed: #0d1e21;
+  --color-on-tertiary-container: #f8fdfd;
+  --color-inverse-surface: #2c3132;
+  --color-on-primary-container: #f7feff;
+  --color-outline: #6e797b;
+  --color-tertiary-fixed-dim: #c2c7c8;
+  --color-on-surface: #171c1d;
+  --color-secondary: #506164;
+  --color-primary-fixed: #94f1ff;
+  --color-secondary-fixed-dim: #b8cacd;
+  --color-primary-fixed-dim: #6fd5e4;
+  --color-on-tertiary-fixed-variant: #424848;
+  --color-tertiary: #575d5d;
+  --color-on-surface-variant: #3e494b;
+  --color-on-background: #171c1d;
+  --color-surface-variant: #dfe3e4;
+  --color-tertiary-fixed: #dee3e3;
+  --color-error-container: #ffdad6;
+  --color-on-error: #ffffff;
+  --color-surface-container-high: #e5e9ea;
+  --color-secondary-fixed: #d3e6e9;
+  --color-primary: #006670;
+  --color-surface-container-highest: #dfe3e4;
+  --color-surface: #f6fafb;
+  --color-on-tertiary-fixed: #171d1d;
+  --color-on-primary-fixed-variant: #004f57;
+  --color-inverse-primary: #6fd5e4;
+  --color-outline-variant: #bdc9cb;
+  --color-secondary-container: #d3e6e9;
+  --color-surface-dim: #d6dbdb;
+  --color-on-primary-fixed: #001f24;
+  --color-error: #ba1a1a;
+  --color-surface-container: #eaefef;
+  --color-inverse-on-surface: #edf1f2;
+  --color-primary-container: #00818e;
+  --color-surface-tint: #006973;
+  --color-surface-container-low: #f0f4f5;
+  --color-tertiary-container: #707676;
+  --color-surface-bright: #f6fafb;
+  --color-surface-container-lowest: #ffffff;
+  --color-on-secondary-container: #56676a;
+  --color-on-secondary: #ffffff;
+  --color-on-error-container: #93000a;
+
+  /* Fonts */
+  --font-headline: "Public Sans", sans-serif;
+  --font-body: "Inter", sans-serif;
+  --font-label: "Inter", sans-serif;
+
+  /* Radius */
+  --radius: 0.125rem;
+  --radius-lg: 0.25rem;
+  --radius-xl: 0.5rem;
+  --radius-full: 0.75rem;
+}
+
+body {
+  min-height: max(884px, 100dvh);
+  font-family: 'Inter', sans-serif;
+}
+
+.material-symbols-outlined {
+  font-variation-settings:
+    'FILL' 0,
+    'wght' 400,
+    'GRAD' 0,
+    'opsz' 24;
+}
+
+h1,
+h2,
+h3 {
+  font-family: 'Public Sans', sans-serif;
+}
+
+
