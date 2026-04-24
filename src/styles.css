@@ -64,6 +64,10 @@
   --radius-full: 0.75rem;
 }
 
+html {
+  scroll-behavior: smooth;
+}
+
 body {
   min-height: max(884px, 100dvh);
   font-family: 'Inter', sans-serif;

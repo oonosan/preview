@@ -1,4 +1,5 @@
-import { Component } from '@angular/core';
+import { ViewportScroller } from '@angular/common';
+import { Component, inject } from '@angular/core';
 
 @Component({
   selector: 'app-home',
@@ -6,4 +7,10 @@ import { Component } from '@angular/core';
   templateUrl: './home.html',
   styleUrl: './home.css',
 })
-export class Home {}
+export class Home {
+  private scroller = inject(ViewportScroller);
+
+  scrollToSection(id: string) {
+    this.scroller.scrollToAnchor(id);
+  }
+}

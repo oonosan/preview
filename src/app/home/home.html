@@ -2,59 +2,71 @@
 <header class="fixed top-0 w-full z-50 bg-[#f6fafb]/80 dark:bg-[#171c1d]/80 backdrop-blur-xl">
   <div class="flex justify-between items-center max-w-7xl mx-auto px-6 h-20">
     <div class="flex items-center gap-2">
-      <img
-        src="logo.png"
-        alt="Newcomer logo"
-        class="w-8 h-8"
-        />
+      <img src="logo2.png" alt="Newcomer logo" class="w-8 h-8" />
     </div>
     <button
-      class="bg-[#006670] text-on-primary px-5 py-2.5 rounded-full text-sm font-semibold hover:bg-primary-container transition-all active:scale-95"
-    >
+      class="bg-[#006670] cursor-pointer text-on-primary px-5 py-2.5 rounded-full text-sm font-semibold hover:bg-primary-container transition-all active:scale-95"
+      (click)="scrollToSection('contact')"
+      >
       Get Started
     </button>
   </div>
 </header>
 <main class="pt-20">
 
-<!-- Hero Section - Centered without Image -->
-<section class="relative px-6 pt-24 pb-32 overflow-hidden text-center">
-<div class="max-w-4xl mx-auto relative z-10">
-<span class="inline-block px-4 py-1.5 mb-8 text-xs font-bold tracking-widest uppercase bg-surface-container-high text-primary rounded-full">Your Guide to Argentina</span>
-<h1 class="text-5xl md:text-8xl font-extrabold leading-[1.1] text-on-surface mb-8 tracking-tight">
-                        Expert <span class="text-primary italic">Immigration</span> &amp; Document Services.
-                    </h1>
-<p class="text-lg md:text-xl text-secondary mb-12 max-w-2xl mx-auto leading-relaxed">
-                        Navigating Argentine bureaucracy shouldn't be a hurdle. We provide professional assistance for residency, legalizations, and all your documentation needs.
-                    </p>
-<div class="flex flex-col sm:flex-row gap-4 justify-center">
-<button class="bg-primary text-on-primary px-10 py-4 rounded-full font-bold flex items-center justify-center gap-2 shadow-xl shadow-primary/20 hover:scale-105 transition-transform">
-                            Book Consultation <span class="material-symbols-outlined" data-icon="arrow_forward">arrow_forward</span>
-</button>
-<button class="bg-surface-container-highest text-on-surface px-10 py-4 rounded-full font-bold hover:bg-surface-variant transition-colors">
-                            View Services
-                        </button>
-</div>
-<!-- Small floating badges for visual balance -->
-<div class="mt-16 flex flex-wrap justify-center gap-8 opacity-60">
-<div class="flex items-center gap-2">
-<span class="material-symbols-outlined text-primary" data-icon="verified_user">verified_user</span>
-<span class="font-bold text-sm">Certified Agency</span>
-</div>
-<div class="flex items-center gap-2">
-<span class="material-symbols-outlined text-primary" data-icon="language">language</span>
-<span class="font-bold text-sm">Global Support</span>
-</div>
-<div class="flex items-center gap-2">
-<span class="material-symbols-outlined text-primary" data-icon="timer">timer</span>
-<span class="font-bold text-sm">Express Processing</span>
-</div>
-</div>
-</div>
-</section>
+  <!-- Hero Section - Centered without Image -->
+  <section class="relative px-6 pt-24 pb-32 overflow-hidden text-center">
+    <div class="max-w-4xl mx-auto relative z-10">
+      <span
+        class="inline-block px-4 py-1.5 mb-8 text-xs font-bold tracking-widest uppercase bg-surface-container-high text-primary rounded-full"
+        >Your Guide to Argentina</span
+      >
+      <h1
+        class="text-5xl md:text-8xl font-extrabold leading-[1.1] text-on-surface mb-8 tracking-tight"
+      >
+        Expert <span class="text-primary italic">Immigration</span> &amp; Document Services.
+      </h1>
+      <p class="text-lg md:text-xl text-secondary mb-12 max-w-2xl mx-auto leading-relaxed">
+        Navigating Argentine bureaucracy shouldn't be a hurdle. We provide professional assistance
+        for residency, legalizations, and all your documentation needs.
+      </p>
+      <div class="flex flex-col sm:flex-row gap-4 justify-center">
+        <button
+          class="bg-primary cursor-pointer text-on-primary px-10 py-4 rounded-full font-bold flex items-center justify-center gap-2 shadow-xl shadow-primary/20 hover:scale-105 transition-transform"
+          (click)="scrollToSection('contact')"
+          >
+          Book Consultation
+          <span class="material-symbols-outlined" data-icon="arrow_forward">arrow_forward</span>
+        </button>
+        <button
+          class="bg-surface-container-highest cursor-pointer text-on-surface px-10 py-4 rounded-full font-bold hover:bg-surface-variant transition-colors"
+          (click)="scrollToSection('services')"
+        >
+          View Services
+        </button>
+      </div>
+      <!-- Small floating badges for visual balance -->
+      <div class="mt-16 flex flex-wrap justify-center gap-8 opacity-60">
+        <div class="flex items-center gap-2">
+          <span class="material-symbols-outlined text-primary" data-icon="verified_user"
+            >verified_user</span
+          >
+          <span class="font-bold text-sm">Certified Agency</span>
+        </div>
+        <div class="flex items-center gap-2">
+          <span class="material-symbols-outlined text-primary" data-icon="language">language</span>
+          <span class="font-bold text-sm">Global Support</span>
+        </div>
+        <div class="flex items-center gap-2">
+          <span class="material-symbols-outlined text-primary" data-icon="timer">timer</span>
+          <span class="font-bold text-sm">Express Processing</span>
+        </div>
+      </div>
+    </div>
+  </section>
 
   <!-- Services Grid - Bento Style -->
-  <section class="bg-surface-container-low py-24 px-6">
+  <section class="bg-surface-container-low py-24 px-6" id="services">
     <div class="max-w-7xl mx-auto">
       <div class="mb-16">
         <h2 class="text-4xl font-bold mb-4 tracking-tight">Our Expertise</h2>
@@ -131,7 +143,8 @@
           </div>
           <ul class="space-y-3 mb-8">
             <li class="flex items-center gap-2 text-xs font-semibold uppercase tracking-wider">
-              • Permanent Residency
+              • Processing of Temporary and Permanent Residencies for Mercosur and Non-Mercosur
+              Citizens
             </li>
             <li class="flex items-center gap-2 text-xs font-semibold uppercase tracking-wider">
               • Digital Nomad Visas
@@ -259,93 +272,120 @@
       </div>
     </div>
   </section>
+
   <!-- CTA Section -->
-  <section class="py-24 px-6">
+  <!-- CTA Section with Contact Form -->
+  <section class="py-24 px-6" id="contact">
     <div
-      class="max-w-7xl mx-auto bg-primary rounded-[2.5rem] p-12 md:p-24 text-center relative overflow-hidden"
+      class="max-w-7xl mx-auto bg-primary rounded-[2.5rem] p-10 md:p-20 relative overflow-hidden"
     >
-      <div
-        class="absolute inset-0 bg-gradient-to-br from-primary to-primary-container opacity-90"
-      ></div>
-      <div class="relative z-10 max-w-2xl mx-auto">
-        <h2 class="text-4xl md:text-5xl font-bold text-on-primary mb-8 tracking-tight">
-          Ready to begin your Argentine journey?
-        </h2>
-        <p class="text-on-primary/80 mb-12 text-lg">
-          Contact our legal team today for a comprehensive evaluation of your immigration status or
-          document requirements.
-        </p>
-        <div class="flex flex-col sm:flex-row justify-center gap-6">
-          <button
-            class="bg-surface-container-lowest text-primary px-10 py-4 rounded-full font-bold text-lg shadow-xl shadow-black/10"
+      <div class="absolute inset-0 bg-gradient-to-br from-primary to-[#006f7a] opacity-95"></div>
+      <div class="relative z-10 grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
+        <div class="text-left">
+          <h2
+            class="text-4xl md:text-5xl font-bold text-on-primary mb-6 tracking-tight leading-tight"
           >
-            Contact Us
-          </button>
-          <button
-            class="border-2 border-on-primary text-on-primary px-10 py-4 rounded-full font-bold text-lg hover:bg-on-primary/10"
-          >
-            View Pricing
-          </button>
+            Ready to begin your Argentine journey?
+          </h2>
+          <p class="text-on-primary/80 mb-8 text-lg">
+            Send us a message and our legal team will provide a comprehensive evaluation of your
+            immigration status or document requirements.
+          </p>
+          <div class="flex flex-col gap-4">
+            <div class="flex items-center gap-4 text-on-primary/90">
+              <span
+                class="material-symbols-outlined p-2 bg-on-primary/10 rounded-full"
+                data-icon="mail"
+                >mail</span
+              >
+              <span class="font-medium">contact@newcomer.ar</span>
+            </div>
+            <div class="flex items-center gap-4 text-on-primary/90">
+              <span
+                class="material-symbols-outlined p-2 bg-on-primary/10 rounded-full"
+                data-icon="location_on"
+                >location_on</span
+              >
+              <span class="font-medium">Buenos Aires, Argentina</span>
+            </div>
+          </div>
+        </div>
+        <div class="bg-surface-container-lowest rounded-3xl p-8 shadow-2xl">
+          <form class="space-y-5" onsubmit="return false;">
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-5">
+              <div>
+                <label class="block text-sm font-semibold text-on-surface mb-1.5" for="name"
+                  >Name</label
+                >
+                <input
+                  class="w-full bg-surface-container-low border-0 rounded-xl px-4 py-3 text-on-surface focus:ring-2 focus:ring-primary/20 transition-all placeholder:text-secondary/50"
+                  id="name"
+                  placeholder="John Doe"
+                  type="text"
+                />
+              </div>
+              <div>
+                <label class="block text-sm font-semibold text-on-surface mb-1.5" for="email"
+                  >Email</label
+                >
+                <input
+                  class="w-full bg-surface-container-low border-0 rounded-xl px-4 py-3 text-on-surface focus:ring-2 focus:ring-primary/20 transition-all placeholder:text-secondary/50"
+                  id="email"
+                  placeholder="john@example.com"
+                  type="email"
+                />
+              </div>
+            </div>
+            <div>
+              <label class="block text-sm font-semibold text-on-surface mb-1.5" for="subject"
+                >Subject</label
+              >
+              <input
+                class="w-full bg-surface-container-low border-0 rounded-xl px-4 py-3 text-on-surface focus:ring-2 focus:ring-primary/20 transition-all placeholder:text-secondary/50"
+                id="subject"
+                placeholder="Residency Application"
+                type="text"
+              />
+            </div>
+            <div>
+              <label class="block text-sm font-semibold text-on-surface mb-1.5" for="message"
+                >Message</label
+              >
+              <textarea
+                class="w-full bg-surface-container-low border-0 rounded-xl px-4 py-3 text-on-surface focus:ring-2 focus:ring-primary/20 transition-all placeholder:text-secondary/50 min-h-[120px]"
+                id="message"
+                placeholder="How can we help you?"
+              ></textarea>
+            </div>
+            <button
+              class="cursor-pointer w-full bg-primary text-on-primary font-bold py-4 rounded-xl shadow-lg shadow-primary/20 hover:opacity-90 active:scale-[0.98] transition-all flex items-center justify-center gap-2"
+            >
+              Send Message
+              <span class="material-symbols-outlined" data-icon="send">send</span>
+            </button>
+          </form>
         </div>
       </div>
     </div>
   </section>
 </main>
+
 <!-- Footer -->
-<footer class="w-full py-12 border-t border-[#bdc9cb]/15 bg-[#f0f4f5] dark:bg-[#171c1d]">
-  <div class="grid grid-cols-1 md:grid-cols-4 gap-12 max-w-7xl mx-auto px-8">
-    <div class="space-y-6">
-      <div class="flex items-center gap-2">
-        <img
-        src="logo.png"
-        alt="Newcomer logo"
-        class="w-8 h-8"
-        />
-        <span class="text-lg font-bold text-[#006670] uppercase">Newcomer</span>
-      </div>
-      <p class="text-[#575d5d] dark:text-[#bdc9cb] font-['Inter'] text-sm leading-relaxed">
-        Reliable immigration and document services for the international community in Argentina.
-      </p>
-    </div>
-    <div class="space-y-4">
-      <h4 class="font-bold text-[#006670] text-sm uppercase tracking-wider">Services</h4>
-      <ul class="space-y-2 text-[#575d5d] dark:text-[#bdc9cb] text-sm">
-        <li><a class="hover:text-[#006670] transition-all" href="#">Documentation</a></li>
-        <li><a class="hover:text-[#006670] transition-all" href="#">Immigration</a></li>
-        <li><a class="hover:text-[#006670] transition-all" href="#">Apostilles</a></li>
-        <li><a class="hover:text-[#006670] transition-all" href="#">Portfolio</a></li>
-      </ul>
-    </div>
-    <div class="space-y-4">
-      <h4 class="font-bold text-[#006670] text-sm uppercase tracking-wider">Legal</h4>
-      <ul class="space-y-2 text-[#575d5d] dark:text-[#bdc9cb] text-sm">
-        <li><a class="hover:text-[#006670] transition-all" href="#">Documentation</a></li>
-        <li><a class="hover:text-[#006670] transition-all" href="#">Privacy Policy</a></li>
-        <li><a class="hover:text-[#006670] transition-all" href="#">Contact Us</a></li>
-      </ul>
-    </div>
-    <div class="space-y-4">
-      <h4 class="font-bold text-[#006670] text-sm uppercase tracking-wider">Connect</h4>
-      <div class="flex gap-4">
-        <span
-          class="material-symbols-outlined text-[#575d5d] hover:text-[#006670] cursor-pointer transition-all"
-          data-icon="alternate_email"
-          >alternate_email</span
-        >
-        <span
-          class="material-symbols-outlined text-[#575d5d] hover:text-[#006670] cursor-pointer transition-all"
-          data-icon="location_on"
-          >location_on</span
-        >
-      </div>
-    </div>
-  </div>
-  <div class="max-w-7xl mx-auto px-8 mt-12 pt-8 border-t border-[#bdc9cb]/10">
-    <p class="text-xs text-[#575d5d] dark:text-[#bdc9cb] font-['Inter']">
-      © 2024 Newcomer Immigration Services. All rights reserved.
-    </p>
-    <p class="text-[10px] text-[#575d5d]/60 dark:text-[#bdc9cb]/60 font-['Inter'] mt-2">
-      Developed by <a class="hover:text-[#006670] underline transition-all" href="www.onokaren.com">Ono</a>
-    </p>
-  </div>
+ <footer class="w-full py-12 border-t border-[#bdc9cb]/15 bg-[#f0f4f5] dark:bg-[#171c1d]">
+<div class="grid grid-cols-1 gap-12 max-w-7xl mx-auto px-8 text-center place-items-center">
+<div class="space-y-6">
+<div class="flex items-center gap-2 justify-center">
+<span class="material-symbols-outlined text-primary text-2xl" data-icon="account_balance">account_balance</span>
+<span class="text-lg font-bold text-primary uppercase">Newcomer</span>
+</div>
+<p class="text-[#575d5d] dark:text-[#bdc9cb] font-['Inter'] text-sm leading-relaxed">
+                Reliable immigration and document services for the international community in Argentina.
+            </p>
+</div>
+</div>
+<div class="max-w-7xl mx-auto px-8 mt-12 pt-8 border-t border-[#bdc9cb]/10 text-center">
+<p class="text-xs text-[#575d5d] dark:text-[#bdc9cb] font-['Inter']">© 2024 Newcomer Immigration Services. All rights reserved.</p>
+<p class="text-[10px] text-[#575d5d]/60 dark:text-[#bdc9cb]/60 font-['Inter'] mt-2">Developed by <a class="hover:text-[#006670] underline transition-all" href="www.onokaren.com">Ono</a></p>
+</div>
 </footer>
+
