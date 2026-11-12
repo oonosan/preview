@@ -1,0 +1,105 @@
+---
+import Icon from './Icon.astro';
+import { chatLink } from '../site.config';
+
+// `pricing` is optional: add e.g. "From USD 150 · ~3 weeks" and it shows on the card.
+const services: {
+  icon: 'passport' | 'document' | 'id';
+  title: string;
+  text: string;
+  tags?: string[];
+  pricing?: string;
+  wide?: boolean;
+  tint: 'mint' | 'terracotta';
+}[] = [
+  {
+    icon: 'passport',
+    title: 'Immigration & visas',
+    text: 'Temporary and permanent residency through RaDEX, for Mercosur and non‑Mercosur citizens. Digital nomad visa. Urgent renewals.',
+    tags: ['RaDEX', 'Mercosur', 'Non‑Mercosur', 'Digital nomad'],
+    wide: true,
+    tint: 'mint',
+  },
+  {
+    icon: 'document',
+    title: 'Documents',
+    text: 'Criminal records, Hague apostille, legalizations and powers of attorney.',
+    tint: 'terracotta',
+  },
+  {
+    icon: 'id',
+    title: 'DNI, CUIL & more',
+    text: 'DNI and CUIL, sworn translations, birth and marriage certificates.',
+    tint: 'mint',
+  },
+];
+
+const abroad = chatLink('Hi! I live abroad and need an Argentine document.');
+---
+
+<section id="services" class="mx-auto flex max-w-6xl flex-col gap-9 px-6 pt-20 pb-10">
+  <div class="flex flex-wrap items-end justify-between gap-4">
+    <div class="flex max-w-2xl flex-col gap-3">
+      <span class="text-sm font-bold tracking-[0.08em] text-terracotta uppercase">What we do</span>
+      <h2 class="m-0 font-headline text-3xl leading-tight font-extrabold tracking-[-0.03em] md:text-[40px]">
+        One person, start to finish, for every Argentine paper you need.
+      </h2>
+    </div>
+    <p class="m-0 max-w-sm text-base leading-relaxed text-muted">
+      You'll know what you need, what it costs and how long it takes before anything starts.
+    </p>
+  </div>
+
+  <div class="grid grid-cols-1 gap-5 md:grid-cols-3">
+    {services.map((s) => (
+      <article
+        class:list={[
+          'service-card service-card--light flex min-w-0 flex-col gap-4 rounded-3xl border border-line bg-white p-8',
+          s.wide && 'md:col-span-2',
+        ]}
+      >
+        <span
+          class:list={[
+            'flex h-[52px] w-[52px] items-center justify-center rounded-2xl',
+            s.tint === 'mint' ? 'bg-mint-soft text-teal' : 'bg-terracotta-tint text-terracotta',
+          ]}
+        >
+          <Icon name={s.icon} size={26} />
+        </span>
+        <h3 class="m-0 font-headline text-[22px] font-bold">{s.title}</h3>
+        <p class="m-0 text-base leading-relaxed text-muted">{s.text}</p>
+        {s.tags && (
+          <ul class="m-0 flex list-none flex-wrap gap-2 p-0">
+            {s.tags.map((t) => (
+              <li class="rounded-full bg-sand px-3 py-1.5 text-[13px] font-semibold">{t}</li>
+            ))}
+          </ul>
+        )}
+        {s.pricing && <p class="m-0 mt-auto text-sm font-semibold text-teal-dark">{s.pricing}</p>}
+      </article>
+    ))}
+
+    <article class="service-card flex min-w-0 flex-wrap items-center gap-6 rounded-3xl bg-teal p-8 text-white md:col-span-2">
+      <div class="flex min-w-0 flex-[1_1_320px] flex-col gap-3.5">
+        <span class="text-[13px] font-bold tracking-[0.08em] text-[#bfe0d6] uppercase">
+          Living abroad?
+        </span>
+        <h3 class="m-0 font-headline text-2xl font-bold md:text-[26px]">
+          We find, legalize, apostille and ship your Argentine documents — anywhere.
+        </h3>
+        <p class="m-0 text-base leading-relaxed text-[#d7ece6]">
+          No trip to Argentina, no endless appointments.
+        </p>
+      </div>
+      <a
+        href={abroad.href}
+        target={abroad.external ? '_blank' : undefined}
+        rel={abroad.external ? 'noopener' : undefined}
+        class="inline-flex items-center gap-2 rounded-full bg-white px-5 py-3.5 font-bold text-teal-dark transition-transform hover:-translate-y-0.5"
+      >
+        Request a document
+        <Icon name="arrow" size={18} strokeWidth={2} />
+      </a>
+    </article>
+  </div>
+</section>

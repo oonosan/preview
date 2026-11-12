@@ -1,0 +1,53 @@
+---
+import { chatLink } from '../site.config';
+
+// Each chip opens WhatsApp with the question pre-filled, or, without a
+// WhatsApp number, drops the question into the contact form.
+const questions = [
+  'Do I need to be in Argentina to get my criminal record?',
+  'How long does a RaDEX residency take?',
+  'What is the Hague apostille?',
+  "I'm here as a tourist — can I apply for residency?",
+  'How do you ship documents abroad?',
+];
+---
+
+<section
+  aria-labelledby="common-questions"
+  class="mx-auto flex max-w-6xl flex-col gap-5 px-6 pb-12"
+>
+  <h2 id="common-questions" class="m-0 font-headline text-[22px] font-bold text-ink">
+    People often ask us…
+  </h2>
+  <ul class="m-0 flex list-none flex-wrap gap-2.5 p-0">
+    {questions.map((q) => {
+      const link = chatLink(q);
+      return (
+        <li>
+          <a
+            href={link.href}
+            target={link.external ? '_blank' : undefined}
+            rel={link.external ? 'noopener' : undefined}
+            data-ask={link.external ? undefined : q}
+            class="inline-block rounded-2xl sm:rounded-full border border-[#c5dcd5] bg-mint-soft px-[18px] py-3 text-[15px] font-medium text-ink transition-colors hover:border-teal hover:bg-white"
+          >
+            {q}
+          </a>
+        </li>
+      );
+    })}
+  </ul>
+</section>
+
+<script>
+  // Fallback when there's no WhatsApp number: pre-fill the contact form.
+  document.querySelectorAll<HTMLAnchorElement>('[data-ask]').forEach((chip) => {
+    chip.addEventListener('click', () => {
+      const subject = document.querySelector<HTMLInputElement>('#subject');
+      const message = document.querySelector<HTMLTextAreaElement>('#message');
+      if (subject && !subject.value) subject.value = 'Question';
+      if (message) message.value = chip.dataset.ask ?? '';
+      setTimeout(() => message?.focus({ preventScroll: true }), 600);
+    });
+  });
+</script>

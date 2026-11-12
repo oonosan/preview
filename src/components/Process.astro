@@ -1,0 +1,52 @@
+---
+// Steps 1–2 done, 3 in progress, 4 next: a visual hint of "you always know where you are".
+const steps = [
+  {
+    title: 'Consultation',
+    text: 'We listen and tell you exactly what you need, the price and the timing.',
+    tone: 'teal',
+  },
+  {
+    title: 'Getting your documents',
+    text: 'We request certificates and records on your behalf.',
+    tone: 'teal',
+  },
+  {
+    title: 'Legalization & apostille',
+    text: "Everything legalized, translated and apostilled so it's valid.",
+    tone: 'terracotta',
+  },
+  {
+    title: 'Submission',
+    text: 'We file on RaDEX, or ship your documents to your door.',
+    tone: 'neutral',
+  },
+] as const;
+
+const border = {
+  teal: 'border-teal',
+  terracotta: 'border-terracotta-soft',
+  neutral: 'border-line-strong',
+};
+const number = { teal: 'text-teal', terracotta: 'text-terracotta', neutral: 'text-muted' };
+---
+
+<section id="process" class="mx-auto flex max-w-6xl flex-col gap-9 px-6 pt-16 pb-24">
+  <div class="flex max-w-2xl flex-col gap-3">
+    <span class="text-sm font-bold tracking-[0.08em] text-terracotta uppercase">How it works</span>
+    <h2 class="m-0 font-headline text-3xl leading-tight font-extrabold tracking-[-0.03em] md:text-[40px]">
+      Four steps. You always know which one you're on.
+    </h2>
+  </div>
+  <ol class="m-0 grid list-none grid-cols-1 gap-8 p-0 sm:grid-cols-2 lg:grid-cols-4 lg:gap-5">
+    {steps.map((s, i) => (
+      <li class:list={['flex flex-col gap-3 border-t-[3px] pt-5', border[s.tone]]}>
+        <span class:list={['text-[15px] font-extrabold', number[s.tone]]}>
+          {String(i + 1).padStart(2, '0')}
+        </span>
+        <h3 class="m-0 font-headline text-xl font-bold">{s.title}</h3>
+        <p class="m-0 text-[15px] leading-relaxed text-muted">{s.text}</p>
+      </li>
+    ))}
+  </ol>
+</section>
