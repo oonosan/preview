@@ -12,5 +12,18 @@
 </head>
 <body class="bg-background text-on-surface selection:bg-primary-container selection:text-on-primary-container">
   <app-root></app-root>
+
+  <!--
+    Static copy of the contact form so Netlify detects it at deploy time
+    (Angular renders the real form in the browser, which Netlify can't see).
+    Field names must match the contactForm in src/app/home/home.ts.
+  -->
+  <form name="contact-newcomer" data-netlify="true" netlify-honeypot="bot-field" hidden>
+    <input type="text" name="name" />
+    <input type="email" name="email" />
+    <input type="text" name="subject" />
+    <textarea name="message"></textarea>
+    <input name="bot-field" />
+  </form>
 </body>
 </html>
