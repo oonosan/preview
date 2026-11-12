@@ -1,0 +1,59 @@
+---
+import ContactForm from './ContactForm.astro';
+import Icon from './Icon.astro';
+import { chatLink, hasWhatsApp, site } from '../site.config';
+
+const chat = chatLink();
+---
+
+<section id="contact" class="border-t border-line bg-sand py-24">
+  <div class="mx-auto grid max-w-6xl px-6 grid-cols-1 items-center gap-14 lg:grid-cols-2">
+    <div class="flex flex-col gap-6">
+      <span class="text-sm font-bold tracking-[0.08em] text-terracotta uppercase">Contact</span>
+      <h2 class="m-0 font-headline text-3xl leading-tight font-extrabold tracking-[-0.03em] md:text-[44px]">
+        Tell us about your case.
+      </h2>
+      <p class="m-0 max-w-md text-lg leading-relaxed text-muted">
+        You'll get a personal reply with what you need, what it costs and how long it takes.
+      </p>
+      <ul class="m-0 flex list-none flex-col gap-4 p-0 text-ink">
+        {hasWhatsApp && (
+          <li>
+            <a
+              href={chat.href}
+              target="_blank"
+              rel="noopener"
+              class="flex items-center gap-4 font-medium hover:text-teal"
+            >
+              <span class="flex h-10 w-10 items-center justify-center rounded-full bg-white text-teal">
+                <Icon name="chat" size={20} />
+              </span>
+              WhatsApp
+            </a>
+          </li>
+        )}
+        <li>
+          <a
+            href={`mailto:${site.email}`}
+            class="flex items-center gap-4 font-medium hover:text-teal"
+          >
+            <span class="flex h-10 w-10 items-center justify-center rounded-full bg-white text-teal">
+              <Icon name="mail" size={20} />
+            </span>
+            {site.email}
+          </a>
+        </li>
+        <li class="flex items-center gap-4 font-medium">
+          <span class="flex h-10 w-10 items-center justify-center rounded-full bg-white text-teal">
+            <Icon name="pin" size={20} />
+          </span>
+          {site.city}
+        </li>
+      </ul>
+    </div>
+
+    <div class="rounded-3xl border border-line bg-white p-8 shadow-[0_30px_60px_-40px_rgba(27,43,48,0.4)]">
+      <ContactForm />
+    </div>
+  </div>
+</section>

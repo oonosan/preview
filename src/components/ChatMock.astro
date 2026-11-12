@@ -1,0 +1,82 @@
+---
+import Icon from './Icon.astro';
+import { site } from '../site.config';
+
+// An illustrative conversation (labelled as an example on the card itself).
+const name = site.ownerName ? `${site.ownerName} · Newcomer` : 'Newcomer';
+const checklist = [
+  'Full name and date of birth',
+  'City where you were registered',
+  'Your shipping address',
+];
+---
+
+<figure
+  class="mx-auto w-full max-w-[400px] overflow-hidden rounded-[36px] border border-line bg-white shadow-[0_40px_80px_-40px_rgba(4,60,66,0.45)]"
+  aria-label="Example conversation on WhatsApp"
+>
+  <div class="flex items-center gap-3 bg-teal px-5 py-4 text-white">
+    <span class="flex h-10 w-10 items-center justify-center rounded-full bg-white">
+      <img src="/logo2.png" alt="" width="30" height="30" class="h-[30px] w-[30px]" />
+    </span>
+    <div class="flex flex-col">
+      <span class="text-[15px] font-bold">{name}</span>
+      <span class="text-xs text-[#cde7e0]">Immigration &amp; documents</span>
+    </div>
+  </div>
+
+  <div class="flex min-h-[460px] flex-col gap-2.5 bg-mint-chat px-4 pt-5 pb-6">
+    <span class="self-center rounded-full bg-white px-2.5 py-1 text-[11px] font-semibold text-[#4f676d]">
+      Example conversation
+    </span>
+
+    <p
+      class="chat-msg m-0 max-w-[82%] self-end rounded-[16px_16px_4px_16px] bg-bubble px-3.5 py-2.5 text-sm leading-snug"
+      style="--i: 0"
+    >
+      Hi! I live in Madrid and need my Argentine birth certificate with the Hague apostille. Can you
+      help?
+    </p>
+    <p
+      class="chat-msg m-0 max-w-[82%] self-start rounded-[16px_16px_16px_4px] bg-white px-3.5 py-2.5 text-sm leading-snug"
+      style="--i: 1"
+    >
+      Hi! Yes — we request it, apostille it and ship it to Madrid. You don't need to travel.
+    </p>
+    <p
+      class="chat-msg m-0 max-w-[82%] self-start rounded-[16px_16px_16px_4px] bg-white px-3.5 py-2.5 text-sm leading-snug"
+      style="--i: 2"
+    >
+      Here's what we need from you:
+    </p>
+    <ul
+      class="chat-msg m-0 flex w-[82%] list-none flex-col gap-2 self-start rounded-2xl border border-[#dceae5] bg-white px-3.5 py-3 text-[13px]"
+      style="--i: 3"
+    >
+      {checklist.map((item) => (
+        <li class="flex items-center gap-2">
+          <Icon name="check" size={16} strokeWidth={2.4} class="shrink-0 text-teal" />
+          {item}
+        </li>
+      ))}
+      <li class="mt-1 border-t border-[#e6efec] pt-2 font-semibold text-teal-dark">
+        We confirm price and timing before starting.
+      </li>
+    </ul>
+    <p
+      class="chat-msg m-0 max-w-[82%] self-end rounded-[16px_16px_4px_16px] bg-bubble px-3.5 py-2.5 text-sm leading-snug"
+      style="--i: 4"
+    >
+      Perfect, let's do it.
+    </p>
+    <div
+      class="chat-msg flex gap-1 self-start rounded-2xl bg-white px-3.5 py-3"
+      style="--i: 5"
+      aria-hidden="true"
+    >
+      <span class="typing-dot"></span>
+      <span class="typing-dot"></span>
+      <span class="typing-dot"></span>
+    </div>
+  </div>
+</figure>

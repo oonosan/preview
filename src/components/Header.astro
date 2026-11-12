@@ -1,0 +1,40 @@
+---
+import Icon from './Icon.astro';
+import { chatLink } from '../site.config';
+
+const nav = [
+  { href: '#services', label: 'Services' },
+  { href: '#process', label: 'How it works' },
+  { href: '#contact', label: 'Contact' },
+];
+const cta = chatLink();
+---
+
+<header class="fixed inset-x-0 top-0 z-50 border-b border-line bg-cream/90 backdrop-blur-xl">
+  <div class="mx-auto flex h-20 max-w-6xl items-center justify-between gap-6 px-6">
+    <a href="#top" class="flex items-center gap-2.5 text-ink">
+      <img src="/logo2.png" alt="" width="36" height="36" class="h-9 w-9" />
+      <span class="font-headline text-xl font-bold tracking-tight">Newcomer</span>
+    </a>
+    <nav aria-label="Main" class="flex items-center gap-8">
+      <ul class="hidden items-center gap-8 text-[15px] font-medium md:flex">
+        {nav.map((item) => (
+          <li>
+            <a href={item.href} class="text-ink transition-colors hover:text-teal">
+              {item.label}
+            </a>
+          </li>
+        ))}
+      </ul>
+      <a
+        href={cta.href}
+        target={cta.external ? '_blank' : undefined}
+        rel={cta.external ? 'noopener' : undefined}
+        class="inline-flex items-center gap-2 rounded-full bg-teal px-5 py-3 text-sm font-semibold text-white transition-all hover:bg-teal-dark active:scale-95"
+      >
+        <Icon name="chat" size={18} strokeWidth={2} />
+        Chat with us
+      </a>
+    </nav>
+  </div>
+</header>
