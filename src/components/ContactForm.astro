@@ -1,0 +1,206 @@
+---
+// Contact form handled by Netlify Forms.
+// Astro outputs static HTML, so Netlify detects this form at deploy time.
+// The script below adds inline validation and submits with fetch so the
+// visitor stays on the page; without JS it falls back to a normal POST.
+
+const inputClass =
+  'w-full bg-surface-container-low border-0 rounded-xl px-4 py-3 text-on-surface focus:ring-2 focus:ring-primary/20 transition-all placeholder:text-secondary/50 aria-[invalid=true]:ring-2 aria-[invalid=true]:ring-error';
+const labelClass = 'block text-sm font-semibold text-on-surface mb-1.5';
+const errorClass = 'text-error text-xs mt-1.5';
+---
+
+<div data-contact>
+  <div class="text-center py-12 space-y-4" role="status" data-success hidden>
+    <span class="material-symbols-outlined text-primary text-5xl" data-icon="check_circle"
+      >check_circle</span
+    >
+    <h3 class="text-2xl font-bold text-on-surface">Message sent!</h3>
+    <p class="text-secondary">Thanks for reaching out. We'll get back to you shortly.</p>
+    <button type="button" class="cursor-pointer text-primary font-bold underline" data-reset>
+      Send another message
+    </button>
+  </div>
+
+  <form
+    class="space-y-5"
+    name="contact-newcomer"
+    method="POST"
+    data-netlify="true"
+    netlify-honeypot="bot-field"
+    novalidate
+  >
+    <input type="hidden" name="form-name" value="contact-newcomer" />
+    <!-- Honeypot: hidden from users, catches bots -->
+    <p class="hidden" aria-hidden="true">
+      <label>Don't fill this out: <input name="bot-field" tabindex="-1" autocomplete="off" /></label>
+    </p>
+
+    <div class="grid grid-cols-1 sm:grid-cols-2 gap-5">
+      <div>
+        <label class={labelClass} for="name">Name</label>
+        <input
+          class={inputClass}
+          id="name"
+          name="name"
+          type="text"
+          placeholder="John Doe"
+          autocomplete="name"
+          required
+          minlength="2"
+          maxlength="100"
+          aria-describedby="name-error"
+          data-msg-required="Please enter your name."
+          data-msg-invalid="Please enter your name (at least 2 characters)."
+        />
+        <p id="name-error" class={errorClass} hidden></p>
+      </div>
+      <div>
+        <label class={labelClass} for="email">Email</label>
+        <input
+          class={inputClass}
+          id="email"
+          name="email"
+          type="email"
+          placeholder="john@example.com"
+          autocomplete="email"
+          required
+          maxlength="200"
+          aria-describedby="email-error"
+          data-msg-required="Please enter your email."
+          data-msg-invalid="Please enter a valid email address."
+        />
+        <p id="email-error" class={errorClass} hidden></p>
+      </div>
+    </div>
+
+    <div>
+      <label class={labelClass} for="subject">Subject</label>
+      <input
+        class={inputClass}
+        id="subject"
+        name="subject"
+        type="text"
+        placeholder="Residency Application"
+        required
+        minlength="3"
+        maxlength="150"
+        aria-describedby="subject-error"
+        data-msg-required="Please add a subject."
+        data-msg-invalid="Please add a subject (at least 3 characters)."
+      />
+      <p id="subject-error" class={errorClass} hidden></p>
+    </div>
+
+    <div>
+      <label class={labelClass} for="message">Message</label>
+      <textarea
+        class={`${inputClass} min-h-[120px]`}
+        id="message"
+        name="message"
+        placeholder="How can we help you?"
+        required
+        minlength="10"
+        maxlength="5000"
+        aria-describedby="message-error"
+        data-msg-required="Please write a message."
+        data-msg-invalid="Please write a message (at least 10 characters)."></textarea>
+      <p id="message-error" class={errorClass} hidden></p>
+    </div>
+
+    <p class="text-error text-sm" role="alert" data-submit-error hidden>
+      Something went wrong sending your message. Please try again or email us directly.
+    </p>
+
+    <button
+      type="submit"
+      class="cursor-pointer w-full bg-primary text-on-primary font-bold py-4 rounded-xl shadow-lg shadow-primary/20 hover:opacity-90 active:scale-[0.98] transition-all flex items-center justify-center gap-2 disabled:opacity-60 disabled:cursor-wait"
+    >
+      <span data-submit-label>Send Message</span>
+      <span class="material-symbols-outlined" data-icon="send">send</span>
+    </button>
+  </form>
+</div>
+
+<script>
+  type Field = HTMLInputElement | HTMLTextAreaElement;
+
+  const root = document.querySelector<HTMLElement>('[data-contact]')!;
+  const form = root.querySelector('form')!;
+  const success = root.querySelector<HTMLElement>('[data-success]')!;
+  const submitError = root.querySelector<HTMLElement>('[data-submit-error]')!;
+  const submitBtn = form.querySelector<HTMLButtonElement>('button[type=submit]')!;
+  const submitLabel = form.querySelector<HTMLElement>('[data-submit-label]')!;
+  const fields = [...form.querySelectorAll<Field>('[required]')];
+  const touched = new Set<Field>();
+
+  // Browsers don't enforce minlength on untouched values, so check it explicitly.
+  function isValid(field: Field): boolean {
+    const value = field.value.trim();
+    if (!value) return false;
+    if (field.minLength > 0 && value.length < field.minLength) return false;
+    return field.checkValidity();
+  }
+
+  function render(field: Field) {
+    const error = document.getElementById(`${field.id}-error`)!;
+    const show = touched.has(field) && !isValid(field);
+    field.setAttribute('aria-invalid', String(show));
+    error.hidden = !show;
+    if (show) {
+      error.textContent = field.value.trim()
+        ? field.dataset.msgInvalid!
+        : field.dataset.msgRequired!;
+    }
+  }
+
+  for (const field of fields) {
+    field.addEventListener('blur', () => {
+      touched.add(field);
+      render(field);
+    });
+    field.addEventListener('input', () => render(field));
+  }
+
+  function setSending(sending: boolean) {
+    submitBtn.disabled = sending;
+    submitLabel.textContent = sending ? 'Sending…' : 'Send Message';
+  }
+
+  form.addEventListener('submit', async (event) => {
+    event.preventDefault();
+    fields.forEach((f) => touched.add(f));
+    fields.forEach(render);
+    const firstInvalid = fields.find((f) => !isValid(f));
+    if (firstInvalid) {
+      firstInvalid.focus();
+      return;
+    }
+
+    submitError.hidden = true;
+    setSending(true);
+    try {
+      const body = new URLSearchParams(new FormData(form) as unknown as Record<string, string>);
+      const res = await fetch('/', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+        body: body.toString(),
+      });
+      if (!res.ok) throw new Error(`HTTP ${res.status}`);
+      form.reset();
+      touched.clear();
+      fields.forEach(render);
+      form.hidden = true;
+      success.hidden = false;
+    } catch {
+      submitError.hidden = false;
+    } finally {
+      setSending(false);
+    }
+  });
+
+  root.querySelector('[data-reset]')!.addEventListener('click', () => {
+    success.hidden = true;
+    form.hidden = false;
+  });
+</script>
