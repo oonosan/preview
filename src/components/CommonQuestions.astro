@@ -12,6 +12,10 @@ const faqs = [
     a: "No. We request it on your behalf, apostille it if it's going abroad, and ship it to you — wherever you live.",
   },
   {
+    q: 'Do you speak my language?',
+    a: 'Most likely, yes. We speak English, French, Italian, Portuguese and Spanish, so you can ask questions, understand every document and go through each step in your own language.',
+  },
+  {
     q: 'How long does a RaDEX residency take?',
     a: "It depends on your nationality (Mercosur or not) and the type of residency. We'll tell you the expected timing in the first consultation, before anything starts.",
   },
@@ -141,9 +145,19 @@ const faqs = [
     grid-template-rows: 0fr;
     transition: grid-template-rows 0.35s ease;
   }
+  /* overflow:hidden would also clip the bubbles' shadows, so the inner box
+     gets some breathing room: horizontal padding offset by negative margin,
+     and vertical margins on the bubbles (they count toward the clipped height,
+     so a collapsed answer still shrinks to zero). */
   .faq--js .faq-a-inner {
     overflow: hidden;
     min-height: 0;
+    padding-inline: 8px;
+    margin-inline: -8px;
+  }
+  .faq--js .faq-typing,
+  .faq--js .faq-answer {
+    margin-block: 2px 6px;
   }
   .faq--js .faq-item:not([data-state='closed']) .faq-a {
     grid-template-rows: 1fr;
