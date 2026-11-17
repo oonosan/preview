@@ -1,18 +1,253 @@
 ---
-import Icon from './Icon.astro';
-import { chatLink, hasWhatsApp } from '../site.config';
+import { site } from '../site.config';
 
-const link = chatLink();
+// Floating WhatsApp button with a small chat popup. The visitor types a
+// message and "Start chat" opens WhatsApp with it pre-filled. Without a
+// WhatsApp number configured, it pre-fills the contact form instead.
+const name = site.ownerName ? `${site.ownerName} · Newcomer` : 'Newcomer';
+const number = site.whatsappNumber.replace(/\D/g, '');
+const greeting = site.ownerName
+  ? `Hi! 👋 I'm ${site.ownerName}. How can I help you with your documents?`
+  : 'Hi! 👋 How can we help you with your documents?';
 ---
 
-{hasWhatsApp && (
-  <a
-    href={link.href}
-    target="_blank"
-    rel="noopener"
-    aria-label="Chat with us on WhatsApp"
-    class="fixed right-5 bottom-5 z-50 flex h-14 w-14 items-center justify-center rounded-full bg-teal text-white shadow-[0_12px_28px_-10px_rgba(4,108,117,0.7)] transition-transform hover:scale-105"
+<div class="wa-root fixed right-4 bottom-4 z-50 sm:right-6 sm:bottom-6" data-wa data-number={number}>
+  <div
+    id="wa-popup"
+    class="wa-popup absolute right-0 bottom-[76px] flex w-[min(360px,calc(100vw-32px))] flex-col overflow-hidden rounded-3xl border border-line bg-white shadow-[0_30px_70px_-25px_rgba(4,60,66,0.5)]"
+    role="dialog"
+    aria-modal="false"
+    aria-labelledby="wa-title"
+    hidden
   >
-    <Icon name="chat" size={26} strokeWidth={2} />
-  </a>
-)}
+    <header class="flex items-center gap-3 bg-teal px-4 py-3.5 text-white">
+      <span class="relative flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-white">
+        <img src="/logo2.png" alt="" width="28" height="28" class="h-7 w-7" />
+      </span>
+      <div class="flex min-w-0 flex-1 flex-col">
+        <span id="wa-title" class="truncate text-[15px] font-bold">{name}</span>
+        <span class="text-xs text-[#cde7e0]">Immigration &amp; documents</span>
+      </div>
+      <button
+        type="button"
+        class="flex h-8 w-8 items-center justify-center rounded-full text-white/80 transition hover:bg-white/15 hover:text-white"
+        aria-label="Close chat"
+        data-wa-close
+      >
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" aria-hidden="true">
+          <path d="M18 6 6 18M6 6l12 12"></path>
+        </svg>
+      </button>
+    </header>
+
+    <div class="wa-body flex min-h-[180px] flex-col gap-2 bg-mint-chat px-4 py-5" aria-live="polite">
+      <div class="wa-typing chat-pop flex gap-1 self-start rounded-2xl bg-white px-3.5 py-3" aria-hidden="true">
+        <span class="typing-dot"></span><span class="typing-dot"></span><span class="typing-dot"></span>
+      </div>
+      <p class="wa-greeting m-0 max-w-[85%] self-start rounded-[16px_16px_16px_4px] bg-white px-3.5 pt-2.5 pb-1.5 text-sm leading-snug text-ink shadow-[0_1px_1px_rgba(0,0,0,0.06)]" hidden>
+        {greeting}
+        <span class="wa-time mt-0.5 block text-right text-[10px] text-[#7e9aa0]"></span>
+      </p>
+    </div>
+
+    <form class="flex items-center gap-2 border-t border-line bg-white p-3" data-wa-form>
+      <label for="wa-input" class="sr-only">Your message</label>
+      <input
+        id="wa-input"
+        type="text"
+        autocomplete="off"
+        placeholder="Type a message…"
+        class="min-w-0 flex-1 rounded-full border border-line bg-mist px-4 py-2.5 text-sm text-ink outline-none placeholder:text-[#8a9a9f] focus:border-teal focus:bg-white"
+      />
+      <button
+        type="submit"
+        class="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-[#25d366] text-white transition hover:bg-[#1ebe5a]"
+        aria-label="Start chat on WhatsApp"
+      >
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+          <path d="M3.4 20.4 21 12 3.4 3.6 3.4 10l12.6 2-12.6 2z"></path>
+        </svg>
+      </button>
+    </form>
+  </div>
+
+  <button
+    type="button"
+    class="wa-toggle relative flex h-14 w-14 items-center justify-center rounded-full bg-[#25d366] text-white shadow-[0_12px_28px_-8px_rgba(18,140,70,0.65)] transition-transform hover:scale-105"
+    aria-label="Chat with us on WhatsApp"
+    aria-expanded="false"
+    aria-controls="wa-popup"
+    data-wa-toggle
+  >
+    <span class="wa-ring" aria-hidden="true"></span>
+    <svg class="wa-icon-open" width="30" height="30" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+      <path d="M17.47 14.38c-.3-.15-1.75-.86-2.02-.96-.27-.1-.47-.15-.67.15-.2.3-.77.96-.94 1.16-.17.2-.35.22-.64.07-.3-.15-1.25-.46-2.38-1.47-.88-.79-1.47-1.76-1.65-2.05-.17-.3-.02-.46.13-.6.13-.14.3-.35.45-.52.15-.17.2-.3.3-.5.1-.2.05-.37-.03-.52-.07-.15-.67-1.6-.92-2.2-.24-.58-.49-.5-.67-.51h-.57c-.2 0-.52.07-.79.37-.27.3-1.04 1.02-1.04 2.48s1.07 2.88 1.21 3.08c.15.2 2.1 3.2 5.08 4.49.71.3 1.26.49 1.7.63.71.22 1.36.19 1.87.12.57-.09 1.75-.72 2-1.41.25-.7.25-1.29.17-1.41-.07-.13-.27-.2-.57-.35M12.05 21.5h-.01a9.4 9.4 0 0 1-4.8-1.32l-.34-.2-3.57.94.95-3.48-.22-.36a9.43 9.43 0 0 1-1.45-5.03c0-5.2 4.24-9.44 9.45-9.44a9.4 9.4 0 0 1 6.68 2.77 9.38 9.38 0 0 1 2.76 6.68c0 5.21-4.24 9.44-9.45 9.44m8.04-17.48A11.3 11.3 0 0 0 12.05.7C5.78.7.67 5.8.67 12.07c0 2 .52 3.96 1.52 5.69L.57 23.7l6.08-1.6a11.4 11.4 0 0 0 5.4 1.38h.01c6.27 0 11.38-5.1 11.38-11.38 0-3.04-1.18-5.9-3.33-8.05"></path>
+    </svg>
+    <svg class="wa-icon-close" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" aria-hidden="true">
+      <path d="M18 6 6 18M6 6l12 12"></path>
+    </svg>
+    <span class="wa-badge absolute -top-0.5 -right-0.5 flex h-5 min-w-5 items-center justify-center rounded-full border-2 border-white bg-[#ff3b30] px-1 text-[11px] font-bold" aria-hidden="true" hidden>1</span>
+  </button>
+</div>
+
+<script>
+  const TYPING_MS = 1100;
+  const BADGE_DELAY_MS = 4000;
+  const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  document.querySelectorAll<HTMLElement>('[data-wa]').forEach((root) => {
+    const popup = root.querySelector<HTMLElement>('.wa-popup')!;
+    const toggle = root.querySelector<HTMLButtonElement>('[data-wa-toggle]')!;
+    const badge = root.querySelector<HTMLElement>('.wa-badge')!;
+    const typing = root.querySelector<HTMLElement>('.wa-typing')!;
+    const greeting = root.querySelector<HTMLElement>('.wa-greeting')!;
+    const input = root.querySelector<HTMLInputElement>('#wa-input')!;
+    const number = root.dataset.number ?? '';
+    let greeted = false;
+    let closeTimer = 0;
+
+    // A small "new message" badge nudges the visitor after a few seconds.
+    const badgeTimer = window.setTimeout(() => (badge.hidden = false), BADGE_DELAY_MS);
+
+    const greet = () => {
+      if (greeted) return;
+      greeted = true;
+      const time = new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+      greeting.querySelector('.wa-time')!.textContent = time;
+      const reveal = () => {
+        typing.remove();
+        greeting.hidden = false;
+        greeting.classList.add('chat-pop');
+      };
+      if (reduceMotion) reveal();
+      else window.setTimeout(reveal, TYPING_MS);
+    };
+
+    const open = () => {
+      clearTimeout(closeTimer);
+      clearTimeout(badgeTimer);
+      badge.hidden = true;
+      popup.hidden = false;
+      requestAnimationFrame(() => root.classList.add('is-open'));
+      toggle.setAttribute('aria-expanded', 'true');
+      greet();
+      setTimeout(() => input.focus({ preventScroll: true }), 200);
+    };
+
+    const close = () => {
+      root.classList.remove('is-open');
+      toggle.setAttribute('aria-expanded', 'false');
+      closeTimer = window.setTimeout(() => (popup.hidden = true), reduceMotion ? 0 : 220);
+    };
+
+    toggle.addEventListener('click', () => (root.classList.contains('is-open') ? close() : open()));
+    root.querySelector('[data-wa-close]')?.addEventListener('click', () => {
+      close();
+      toggle.focus();
+    });
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape' && root.classList.contains('is-open')) {
+        close();
+        toggle.focus();
+      }
+    });
+
+    root.querySelector<HTMLFormElement>('[data-wa-form]')?.addEventListener('submit', (e) => {
+      e.preventDefault();
+      const text = input.value.trim();
+
+      if (number) {
+        const query = text ? `?text=${encodeURIComponent(text)}` : '';
+        window.open(`https://wa.me/${number}${query}`, '_blank', 'noopener');
+      } else {
+        // No WhatsApp number yet: hand the message over to the contact form.
+        const subject = document.querySelector<HTMLInputElement>('#subject');
+        const message = document.querySelector<HTMLTextAreaElement>('#message');
+        if (subject && !subject.value) subject.value = 'Question';
+        if (message && text) message.value = text;
+        document.querySelector('#contact')?.scrollIntoView({ behavior: reduceMotion ? 'auto' : 'smooth' });
+        setTimeout(() => message?.focus({ preventScroll: true }), 600);
+      }
+      input.value = '';
+      close();
+    });
+  });
+</script>
+
+<style>
+  .wa-popup {
+    opacity: 0;
+    transform: translateY(12px) scale(0.96);
+    transform-origin: bottom right;
+    transition:
+      opacity 0.2s ease,
+      transform 0.22s cubic-bezier(0.2, 0.9, 0.3, 1.2);
+  }
+  .is-open .wa-popup {
+    opacity: 1;
+    transform: none;
+  }
+
+  /* Swap the WhatsApp logo for an X while the popup is open. */
+  .wa-icon-open,
+  .wa-icon-close {
+    position: absolute;
+    transition:
+      opacity 0.2s ease,
+      transform 0.25s ease;
+  }
+  .wa-icon-close {
+    opacity: 0;
+    transform: rotate(-90deg) scale(0.6);
+  }
+  .is-open .wa-icon-open {
+    opacity: 0;
+    transform: rotate(90deg) scale(0.6);
+  }
+  .is-open .wa-icon-close {
+    opacity: 1;
+    transform: none;
+  }
+
+  /* Soft pulsing ring around the closed button. */
+  .wa-ring {
+    position: absolute;
+    inset: 0;
+    border-radius: 999px;
+    background: #25d366;
+    animation: wa-pulse 2.4s ease-out infinite;
+    z-index: -1;
+  }
+  .is-open .wa-ring {
+    animation: none;
+    opacity: 0;
+  }
+  @keyframes wa-pulse {
+    0% {
+      transform: scale(1);
+      opacity: 0.5;
+    }
+    80%,
+    100% {
+      transform: scale(1.6);
+      opacity: 0;
+    }
+  }
+
+  .wa-body {
+    background-image: radial-gradient(rgba(4, 108, 117, 0.07) 1px, transparent 1px);
+    background-size: 14px 14px;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .wa-popup,
+    .wa-icon-open,
+    .wa-icon-close {
+      transition: none;
+    }
+    .wa-ring {
+      animation: none;
+      display: none;
+    }
+  }
+</style>
