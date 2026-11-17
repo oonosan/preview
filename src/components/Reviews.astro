@@ -1,0 +1,300 @@
+---
+// Recommendations left on Newcomer's Facebook page, shown as a stacked card
+// carousel: the front card is readable, the next two peek out behind it.
+// Quotes are copied word for word from the public posts (Spanish ones stay in
+// Spanish); names are shortened to first name + initial. Each card links to
+// its original post so visitors can check it. Facebook recommendations have
+// no star rating, so none is shown.
+const reviewsPage = 'https://www.facebook.com/NewcomerMSV2017/reviews';
+
+const reviews = [
+  {
+    name: 'Julia R.',
+    lang: 'en',
+    text: 'I’ve started (what it seemed to be) an easy process with Migraciones on my own but the things went completely wrong because of a bureaucratic error. Contacting a lawyer didn’t help a lot and so I eventually found Newcomer and asked for help. They exceeded my expectations in all the possible ways as they actually care about your case, they accompany you in Migraciones, they provide transparent budget, they follow-up your case and have excellent problem solving skills.',
+    truncated: true,
+    url: 'https://www.facebook.com/evatorium/posts/pfbid02KUErt37jAzrnpJRaUeDPDFXm63AvX6T87VQjVVfoGPa7FP4EAa9gMr61zsztMwMpl',
+  },
+  {
+    name: 'Bob P.',
+    lang: 'en',
+    text: 'They did an amazing job of getting our residency renewal through the Radex system and Migraciones process. I would HIGHLY recommend using them.',
+    url: 'https://www.facebook.com/bobpearl/posts/pfbid02kk4LKUosb7Q18zWUbTfUH56j82BFYC84EE6xru1w3ZD2W5ECqpnRbwAeppyUvnUGl',
+  },
+  {
+    name: 'Nati P.',
+    lang: 'es',
+    text: 'Destaco la atención personalizada y el seguimiento hasta el final del trámite, realmente nos facilitó muchisimo todo el soporte que nos brindaron.',
+    url: 'https://www.facebook.com/nataliaromina.pereda/posts/pfbid0w8MQXBS19BCdLmNhFsMBKNwkZieBi6RtUz8DbKK9CF3WNs8Fb2GKHChcYtRKVrXNl',
+  },
+  {
+    name: 'Anton B.',
+    lang: 'en',
+    text: 'Yamila and Silvina from Newcomer do solve the problems. Me and my girlfriend had a complicated case with migraciones as they have lost some of the papers from our application and the case was stuck. We have tried writing various notes and appeals with immigration lawyers and it did not help at all. After a year of helpless waiting we found Newcomer and they were able to push the case to be resolved in just a few months.',
+    truncated: true,
+    url: 'https://www.facebook.com/bak1an/posts/pfbid02Xmi6k4oNDLcRwtPazktFfjCdXmcQqk4vzaU2GFFQzYeMuyvFrT3uHsR1FjQnvL6zl',
+  },
+  {
+    name: 'Sinéad O.',
+    lang: 'en',
+    text: 'Absolutely amazing service by Newcomer. Maria and Yamila were a joy to work with and they made the whole process so easy! I highly recommend Newcomer.',
+    url: 'https://www.facebook.com/sinead.nibhriain/posts/pfbid08ugUCVi1NwEhFnVRBGXGophgzgHAXCHXYAkZebpjXgc8MLkgg6gFAdBZL9rf9iz5l',
+  },
+  {
+    name: 'María José S.',
+    lang: 'es',
+    text: 'Muy buena atención y seguimiento desde el inicio hasta la culminación del trámite comprometidos con su trabajo gracias x todo 😊',
+    url: 'https://www.facebook.com/mariajose.solis.182/posts/pfbid02gPM2WWMPLtVx1DcvSmqdLhefCygYZUGDtkH7MtdG5Bid5jNZpFK1AiHqnCJRM4hXl',
+  },
+  {
+    name: 'Brux Perfumes',
+    lang: 'es',
+    text: 'Muy recomendable. Responsables y muy seguros en su eficacia. La verdad pude resolver muy satisfactoriamente mis papeles. Muy buena y agradable atención.',
+    url: 'https://www.facebook.com/brux.perfumes/posts/pfbid0L4eBw6ku3K2Dkvw5APwqxRdxnHdFnCp19RVXcT3DYF6kEQfSbhUXs7g43ZUgAC3Ml',
+  },
+  {
+    name: 'José Miguel S.',
+    lang: 'es',
+    text: 'Excelente atención, te ayudan a agilizar todo.',
+    url: 'https://www.facebook.com/josemiguel.solismacias/posts/pfbid0zjVNbHkQy1q4hvkFkkSFdb4AuR6n8E9byu9oFzaMwz68G54dpoPPPmeg17hk6eQUl',
+  },
+  {
+    name: 'Thomas C.',
+    lang: 'es',
+    text: 'Muy buen servicio. Recomiendo muchísimo.',
+    url: 'https://www.facebook.com/thomas.cordin/posts/pfbid02mfgPqkk7aYoMoqsqJ1B66NkJWNQDrgMXtaMj266xwoxfzFJnu16BiC9T7mrthnUMl',
+  },
+];
+
+// Same pastels as the "How it works" steps: soft tile, dark initials.
+const tones = [
+  { bg: 'bg-lavender-tint', ink: 'text-lavender-ink' },
+  { bg: 'bg-[#fbe3eb]', ink: 'text-[#8a2f52]' },
+  { bg: 'bg-[#fde9d8]', ink: 'text-[#8a4a1c]' },
+  { bg: 'bg-[#dff1e4]', ink: 'text-[#2f6b40]' },
+];
+
+const initials = (name: string) =>
+  name
+    .split(' ')
+    .map((w) => w[0])
+    .join('')
+    .replace('.', '')
+    .slice(0, 2);
+---
+
+<section id="reviews" aria-labelledby="reviews-title" class="bg-mist">
+  <div class="mx-auto flex max-w-6xl flex-col items-center gap-10 px-4 pt-20 pb-24 sm:px-6">
+    <div class="flex max-w-2xl flex-col items-center gap-3 text-center">
+      <span class="rounded-full bg-lavender-tint px-3 py-1 text-xs font-bold tracking-[0.08em] text-lavender-ink uppercase">
+        Recommendations
+      </span>
+      <h2 id="reviews-title" class="m-0 font-headline text-3xl leading-tight font-extrabold tracking-[-0.03em] md:text-[40px]">
+        In our clients' own words.
+      </h2>
+      <p class="m-0 text-[15px] leading-relaxed text-muted">
+        Recommendations left on our Facebook page. Each one links to the original post.
+      </p>
+    </div>
+
+    <div class="review-carousel w-full max-w-[680px]" aria-roledescription="carousel" aria-label="Client recommendations">
+      <ul class="review-stack m-0 list-none p-0" aria-live="polite">
+        {reviews.map((r, i) => {
+          const tone = tones[i % tones.length];
+          return (
+            <li
+              class="review-card"
+              data-pos={i === 0 ? '0' : i === 1 ? '1' : i === 2 ? '2' : 'back'}
+              aria-roledescription="slide"
+              aria-label={`${i + 1} of ${reviews.length}`}
+            >
+              <figure class="m-0 flex h-full gap-5 rounded-[26px] bg-white p-2.5 shadow-[0_24px_48px_-28px_rgb(27_43_48/0.4)] ring-1 ring-line">
+                <div
+                  class:list={[
+                    'hidden w-36 shrink-0 items-center justify-center rounded-[18px] font-headline text-4xl font-extrabold sm:flex',
+                    tone.bg,
+                    tone.ink,
+                  ]}
+                  aria-hidden="true"
+                >
+                  {initials(r.name)}
+                </div>
+                <div class="flex min-w-0 flex-1 flex-col gap-6 p-3 sm:py-4 sm:pr-5 sm:pl-0">
+                  <blockquote class="m-0 text-[16px] leading-relaxed text-ink" lang={r.lang} cite={r.url}>
+                    <p class="m-0 line-clamp-6 sm:line-clamp-none">{r.text}{r.truncated && ' …'}</p>
+                  </blockquote>
+                  <figcaption class="mt-auto flex flex-wrap items-end justify-between gap-x-4 gap-y-3">
+                    <div class="flex items-center gap-3">
+                      <span
+                        class:list={[
+                          'flex h-10 w-10 shrink-0 items-center justify-center rounded-full text-sm font-extrabold sm:hidden',
+                          tone.bg,
+                          tone.ink,
+                        ]}
+                        aria-hidden="true"
+                      >
+                        {initials(r.name)}
+                      </span>
+                      <div class="flex flex-col">
+                        <span class="font-semibold text-ink">{r.name}</span>
+                        <span class="text-[13px] text-muted">Recommends Newcomer</span>
+                      </div>
+                    </div>
+                    <a
+                      href={r.url}
+                      target="_blank"
+                      rel="noopener"
+                      class="inline-flex items-center gap-1.5 rounded-full px-3 py-1.5 text-[13px] font-semibold text-teal ring-1 ring-line transition-colors hover:bg-mint-soft"
+                    >
+                      <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+                        <path d="M14 8.5V6.8c0-.8.2-1.3 1.4-1.3H17V2.3c-.3 0-1.3-.1-2.5-.1-2.5 0-4.2 1.5-4.2 4.3v2H7.5V12h2.8v9.8H14V12h2.8l.4-3.5z" />
+                      </svg>
+                      {r.truncated ? 'Read the full post' : 'View on Facebook'}
+                      <span class="sr-only">(opens Facebook in a new tab)</span>
+                    </a>
+                  </figcaption>
+                </div>
+              </figure>
+            </li>
+          );
+        })}
+      </ul>
+
+      <div class="mt-7 flex items-center justify-center gap-4">
+        <button type="button" class="review-nav" data-dir="-1" aria-label="Previous recommendation">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 15l6-6 6 6" /></svg>
+        </button>
+        <span class="review-count min-w-12 text-center text-sm font-semibold text-muted tabular-nums">1 / {reviews.length}</span>
+        <button type="button" class="review-nav" data-dir="1" aria-label="Next recommendation">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 9l6 6 6-6" /></svg>
+        </button>
+      </div>
+    </div>
+
+    <a href={reviewsPage} target="_blank" rel="noopener" class="text-sm font-semibold text-teal underline-offset-4 hover:underline">
+      See all recommendations on Facebook ↗
+    </a>
+  </div>
+</section>
+
+<script>
+  // Cycles the stack. Every card gets a data-pos relative to the active one:
+  // 0 = front, 1–2 = peeking behind, "exit" = the card just left (slides down
+  // and fades), "back" = hidden at the back of the stack.
+  document.querySelectorAll<HTMLElement>('.review-carousel').forEach((root) => {
+    const cards = [...root.querySelectorAll<HTMLElement>('.review-card')];
+    const count = root.querySelector('.review-count');
+    const n = cards.length;
+    let active = 0;
+    let timer: number | undefined;
+    let hovered = false;
+    let visible = false;
+    const reduced = matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+    const render = () => {
+      cards.forEach((card, i) => {
+        const d = (i - active + n) % n;
+        const pos = d === 0 ? '0' : d === 1 ? '1' : d === 2 ? '2' : d === n - 1 ? 'exit' : 'back';
+        card.dataset.pos = pos;
+        card.inert = d !== 0;
+        card.setAttribute('aria-hidden', String(d !== 0));
+      });
+      if (count) count.textContent = `${active + 1} / ${n}`;
+    };
+
+    const go = (dir: number) => {
+      active = (active + dir + n) % n;
+      render();
+      schedule();
+    };
+
+    // Autoplay only while the section is on screen and not hovered/focused.
+    const schedule = () => {
+      clearTimeout(timer);
+      if (reduced || hovered || !visible) return;
+      timer = window.setTimeout(() => go(1), 7000);
+    };
+
+    root.querySelectorAll<HTMLButtonElement>('.review-nav').forEach((btn) =>
+      btn.addEventListener('click', () => go(Number(btn.dataset.dir))),
+    );
+    const pause = () => {
+      hovered = true;
+      clearTimeout(timer);
+    };
+    const resume = () => {
+      hovered = false;
+      schedule();
+    };
+    root.addEventListener('mouseenter', pause);
+    root.addEventListener('mouseleave', resume);
+    root.addEventListener('focusin', pause);
+    root.addEventListener('focusout', resume);
+
+    // Touch swipe: the front card follows the finger vertically. Pull it down
+    // past the threshold to send it away (next review); push it up to bring
+    // the previous one back. The stack has touch-action: pan-x, so vertical
+    // drags that start on a card move the cards instead of the page.
+    const stack = root.querySelector<HTMLElement>('.review-stack');
+    let startY = 0;
+    let startX = 0;
+    let dy = 0;
+    let dragging = false;
+    let dragged = false;
+    const front = () => cards[active];
+
+    stack?.addEventListener('pointerdown', (e) => {
+      if (e.pointerType === 'mouse') return;
+      dragging = true;
+      dragged = false;
+      startY = e.clientY;
+      startX = e.clientX;
+      dy = 0;
+      pause();
+    });
+    stack?.addEventListener('pointermove', (e) => {
+      if (!dragging) return;
+      dy = e.clientY - startY;
+      if (!dragged && Math.abs(dy) > 8 && Math.abs(dy) > Math.abs(e.clientX - startX)) {
+        dragged = true;
+        try {
+          stack.setPointerCapture(e.pointerId);
+        } catch {
+          // pointer already gone; the drag still works without capture
+        }
+        front().style.transition = 'none';
+      }
+      if (dragged) front().style.transform = `translateY(${dy * 0.85}px) rotate(${dy * 0.012}deg)`;
+    });
+    const endDrag = () => {
+      if (!dragging) return;
+      dragging = false;
+      const card = front();
+      card.style.transition = '';
+      card.style.transform = '';
+      if (dragged && Math.abs(dy) > 60) go(dy > 0 ? 1 : -1);
+      resume();
+    };
+    stack?.addEventListener('pointerup', endDrag);
+    stack?.addEventListener('pointercancel', endDrag);
+    // A swipe that ends on the "View on Facebook" link must not open it.
+    stack?.addEventListener(
+      'click',
+      (e) => {
+        if (dragged) {
+          e.preventDefault();
+          e.stopPropagation();
+          dragged = false;
+        }
+      },
+      true,
+    );
+
+    new IntersectionObserver(([entry]) => {
+      visible = entry.isIntersecting;
+      schedule();
+    }, { threshold: 0.4 }).observe(root);
+
+    render();
+  });
+</script>
