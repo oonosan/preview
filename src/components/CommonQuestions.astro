@@ -127,9 +127,7 @@ const faqs = [
   // Fallback when there's no WhatsApp number: pre-fill the contact form.
   document.querySelectorAll<HTMLAnchorElement>('[data-ask]').forEach((link) => {
     link.addEventListener('click', () => {
-      const subject = document.querySelector<HTMLInputElement>('#subject');
       const message = document.querySelector<HTMLTextAreaElement>('#message');
-      if (subject && !subject.value) subject.value = 'Question';
       if (message) message.value = link.dataset.ask ?? '';
       setTimeout(() => message?.focus({ preventScroll: true }), 600);
     });

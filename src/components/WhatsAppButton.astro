@@ -161,9 +161,7 @@ const greeting = site.ownerName
         window.open(`https://wa.me/${number}${query}`, '_blank', 'noopener');
       } else {
         // No WhatsApp number yet: hand the message over to the contact form.
-        const subject = document.querySelector<HTMLInputElement>('#subject');
         const message = document.querySelector<HTMLTextAreaElement>('#message');
-        if (subject && !subject.value) subject.value = 'Question';
         if (message && text) message.value = text;
         document.querySelector('#contact')?.scrollIntoView({ behavior: reduceMotion ? 'auto' : 'smooth' });
         setTimeout(() => message?.focus({ preventScroll: true }), 600);
