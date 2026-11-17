@@ -1,38 +1,89 @@
 ---
+import Icon from './Icon.astro';
 import { chatLink } from '../site.config';
 
-// Each chip opens WhatsApp with the question pre-filled, or, without a
-// WhatsApp number, drops the question into the contact form.
-const questions = [
-  'Do I need to be in Argentina to get my criminal record?',
-  'How long does a RaDEX residency take?',
-  'What is the Hague apostille?',
-  "I'm here as a tourist — can I apply for residency?",
-  'How do you ship documents abroad?',
+// Chat-style FAQ: each question is a bubble; tapping it shows a typing
+// indicator, then the answer pops in. One question open at a time.
+// Answers only repeat what the rest of the page already promises; anything
+// case-specific (prices, timing) is left to the consultation.
+const faqs = [
+  {
+    q: 'Do I need to be in Argentina to get my criminal record?',
+    a: "No. We request it on your behalf, apostille it if it's going abroad, and ship it to you — wherever you live.",
+  },
+  {
+    q: 'How long does a RaDEX residency take?',
+    a: "It depends on your nationality (Mercosur or not) and the type of residency. We'll tell you the expected timing in the first consultation, before anything starts.",
+  },
+  {
+    q: 'What is the Hague apostille?',
+    a: 'A certification that makes an Argentine public document valid in the other countries of the Hague Convention, with no further legalization. We handle it for you.',
+  },
+  {
+    q: "I'm here as a tourist — can I apply for residency?",
+    a: "It depends on your nationality and situation. Tell us your case and we'll confirm which route applies to you, with price and timing, before you commit to anything.",
+  },
+  {
+    q: 'How do you ship documents abroad?',
+    a: 'Once your documents are legalized and apostilled, we send them to your door. We confirm shipping cost and timing with you before sending.',
+  },
 ];
 ---
 
 <section
   aria-labelledby="common-questions"
-  class="mx-auto flex max-w-6xl flex-col gap-5 px-6 pb-12"
+  id="faq"
+  class="mx-auto flex max-w-2xl flex-col gap-6 px-6 pb-24"
 >
-  <h2 id="common-questions" class="m-0 font-headline text-[22px] font-bold text-ink">
-    People often ask us…
+  <h2
+    id="common-questions"
+    class="m-0 text-center font-headline text-3xl leading-tight font-extrabold tracking-[-0.03em] text-ink md:text-[40px]"
+  >
+    FAQ
   </h2>
-  <ul class="m-0 flex list-none flex-wrap gap-2.5 p-0">
-    {questions.map((q) => {
-      const link = chatLink(q);
+
+  <ul class="faq m-0 flex list-none flex-col gap-3 p-0" data-faq>
+    {faqs.map((item, i) => {
+      const link = chatLink(item.q);
       return (
-        <li>
-          <a
-            href={link.href}
-            target={link.external ? '_blank' : undefined}
-            rel={link.external ? 'noopener' : undefined}
-            data-ask={link.external ? undefined : q}
-            class="inline-block rounded-2xl sm:rounded-full border border-[#c5dcd5] bg-mint-soft px-[18px] py-3 text-[15px] font-medium text-ink transition-colors hover:border-teal hover:bg-white"
-          >
-            {q}
-          </a>
+        <li class="faq-item flex flex-col gap-2" data-state="closed">
+          <h3 class="m-0 max-w-[85%] self-end text-[15px] font-medium">
+            <button
+              type="button"
+              id={`faq-q-${i}`}
+              aria-expanded="false"
+              aria-controls={`faq-a-${i}`}
+              class="faq-q cursor-pointer rounded-[18px_18px_4px_18px] border border-[#c5dcd5] bg-mint-soft px-[18px] py-3 text-left text-ink transition-colors hover:border-teal hover:bg-white focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-teal"
+            >
+              {item.q}
+            </button>
+          </h3>
+
+          <div id={`faq-a-${i}`} role="region" aria-labelledby={`faq-q-${i}`} class="faq-a">
+            <div class="faq-a-inner flex flex-col items-start">
+              <div
+                class="faq-typing flex gap-1 rounded-2xl bg-white px-3.5 py-3 shadow-sm"
+                aria-hidden="true"
+              >
+                <span class="typing-dot" />
+                <span class="typing-dot" />
+                <span class="typing-dot" />
+              </div>
+              <div class="faq-answer flex max-w-[85%] flex-col gap-2 rounded-[18px_18px_18px_4px] border border-line bg-white px-4 py-3 text-[15px] leading-relaxed text-ink shadow-sm">
+                <p class="m-0">{item.a}</p>
+                <a
+                  href={link.href}
+                  target={link.external ? '_blank' : undefined}
+                  rel={link.external ? 'noopener' : undefined}
+                  data-ask={link.external ? undefined : item.q}
+                  class="inline-flex items-center gap-1.5 self-start text-sm font-bold text-teal-dark hover:underline"
+                >
+                  Ask about your case
+                  <Icon name="arrow" size={16} strokeWidth={2} />
+                </a>
+              </div>
+            </div>
+          </div>
         </li>
       );
     })}
@@ -40,14 +91,97 @@ const questions = [
 </section>
 
 <script>
+  const TYPING_MS = 750;
+  const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
+
+  document.querySelectorAll<HTMLElement>('[data-faq]').forEach((list) => {
+    // Without JS every answer stays visible; with JS they collapse into the chat.
+    list.classList.add('faq--js');
+    const items = [...list.querySelectorAll<HTMLElement>('.faq-item')];
+    const timers = new WeakMap<HTMLElement, number>();
+
+    const setState = (item: HTMLElement, state: 'closed' | 'typing' | 'open') => {
+      item.dataset.state = state;
+      item.querySelector('.faq-q')?.setAttribute('aria-expanded', String(state !== 'closed'));
+    };
+
+    const close = (item: HTMLElement) => {
+      clearTimeout(timers.get(item));
+      setState(item, 'closed');
+    };
+
+    items.forEach((item) => {
+      item.querySelector('.faq-q')?.addEventListener('click', () => {
+        if (item.dataset.state !== 'closed') return close(item);
+        items.filter((other) => other !== item).forEach(close);
+        if (reduceMotion.matches) return setState(item, 'open');
+        setState(item, 'typing');
+        timers.set(
+          item,
+          window.setTimeout(() => setState(item, 'open'), TYPING_MS),
+        );
+      });
+    });
+  });
+
   // Fallback when there's no WhatsApp number: pre-fill the contact form.
-  document.querySelectorAll<HTMLAnchorElement>('[data-ask]').forEach((chip) => {
-    chip.addEventListener('click', () => {
+  document.querySelectorAll<HTMLAnchorElement>('[data-ask]').forEach((link) => {
+    link.addEventListener('click', () => {
       const subject = document.querySelector<HTMLInputElement>('#subject');
       const message = document.querySelector<HTMLTextAreaElement>('#message');
       if (subject && !subject.value) subject.value = 'Question';
-      if (message) message.value = chip.dataset.ask ?? '';
+      if (message) message.value = link.dataset.ask ?? '';
       setTimeout(() => message?.focus({ preventScroll: true }), 600);
     });
   });
 </script>
+
+<style>
+  /* Collapsed answers animate open by growing their grid row. */
+  .faq--js .faq-a {
+    display: grid;
+    grid-template-rows: 0fr;
+    transition: grid-template-rows 0.35s ease;
+  }
+  .faq--js .faq-a-inner {
+    overflow: hidden;
+    min-height: 0;
+  }
+  .faq--js .faq-item:not([data-state='closed']) .faq-a {
+    grid-template-rows: 1fr;
+  }
+
+  .faq--js .faq-typing,
+  .faq--js .faq-answer {
+    display: none;
+  }
+  .faq--js [data-state='typing'] .faq-typing {
+    display: flex;
+    animation: faq-pop 0.25s ease-out;
+  }
+  .faq--js [data-state='open'] .faq-answer {
+    display: flex;
+    animation: faq-pop 0.35s ease-out;
+  }
+  /* The question bubble turns "sent" while its answer is showing. */
+  .faq-item:not([data-state='closed']) .faq-q {
+    border-color: var(--color-teal);
+    background: var(--color-bubble);
+  }
+
+  @keyframes faq-pop {
+    from {
+      opacity: 0;
+      transform: translateY(8px) scale(0.97);
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .faq--js .faq-a {
+      transition: none;
+    }
+    .faq--js [data-state='open'] .faq-answer {
+      animation: none;
+    }
+  }
+</style>

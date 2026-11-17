@@ -25,34 +25,22 @@ const checklist = [
     </div>
   </div>
 
-  <div class="flex min-h-[460px] flex-col gap-2.5 bg-mint-chat px-4 pt-5 pb-6">
+  <div class="flex min-h-[460px] flex-col gap-2.5 bg-mint-chat px-4 pt-5 pb-6" data-chat>
     <span class="self-center rounded-full bg-white px-2.5 py-1 text-[11px] font-semibold text-[#4f676d]">
       Example conversation
     </span>
 
-    <p
-      class="chat-msg m-0 max-w-[82%] self-end rounded-[16px_16px_4px_16px] bg-bubble px-3.5 py-2.5 text-sm leading-snug"
-      style="--i: 0"
-    >
+    <p class="chat-msg m-0 max-w-[82%] self-end rounded-[16px_16px_4px_16px] bg-bubble px-3.5 py-2.5 text-sm leading-snug">
       Hi! I live in Madrid and need my Argentine birth certificate with the Hague apostille. Can you
       help?
     </p>
-    <p
-      class="chat-msg m-0 max-w-[82%] self-start rounded-[16px_16px_16px_4px] bg-white px-3.5 py-2.5 text-sm leading-snug"
-      style="--i: 1"
-    >
+    <p class="chat-msg m-0 max-w-[82%] self-start rounded-[16px_16px_16px_4px] bg-white px-3.5 py-2.5 text-sm leading-snug">
       Hi! Yes — we request it, apostille it and ship it to Madrid. You don't need to travel.
     </p>
-    <p
-      class="chat-msg m-0 max-w-[82%] self-start rounded-[16px_16px_16px_4px] bg-white px-3.5 py-2.5 text-sm leading-snug"
-      style="--i: 2"
-    >
+    <p class="chat-msg m-0 max-w-[82%] self-start rounded-[16px_16px_16px_4px] bg-white px-3.5 py-2.5 text-sm leading-snug">
       Here's what we need from you:
     </p>
-    <ul
-      class="chat-msg m-0 flex w-[82%] list-none flex-col gap-2 self-start rounded-2xl border border-[#dceae5] bg-white px-3.5 py-3 text-[13px]"
-      style="--i: 3"
-    >
+    <ul class="chat-msg m-0 flex w-[82%] list-none flex-col gap-2 self-start rounded-2xl border border-[#dceae5] bg-white px-3.5 py-3 text-[13px]">
       {checklist.map((item) => (
         <li class="flex items-center gap-2">
           <Icon name="check" size={16} strokeWidth={2.4} class="shrink-0 text-teal" />
@@ -63,20 +51,66 @@ const checklist = [
         We confirm price and timing before starting.
       </li>
     </ul>
-    <p
-      class="chat-msg m-0 max-w-[82%] self-end rounded-[16px_16px_4px_16px] bg-bubble px-3.5 py-2.5 text-sm leading-snug"
-      style="--i: 4"
-    >
+    <p class="chat-msg m-0 max-w-[82%] self-end rounded-[16px_16px_4px_16px] bg-bubble px-3.5 py-2.5 text-sm leading-snug">
       Perfect, let's do it.
     </p>
-    <div
-      class="chat-msg flex gap-1 self-start rounded-2xl bg-white px-3.5 py-3"
-      style="--i: 5"
-      aria-hidden="true"
-    >
-      <span class="typing-dot"></span>
-      <span class="typing-dot"></span>
-      <span class="typing-dot"></span>
-    </div>
   </div>
 </figure>
+
+<script>
+  // Plays the conversation once it scrolls into view: before each message a
+  // typing indicator appears on the sender's side, then the message pops in.
+  // Without JS, or with reduced motion, the whole chat is shown as is.
+  const sleep = (ms: number) => new Promise((r) => setTimeout(r, ms));
+  const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  document.querySelectorAll<HTMLElement>('[data-chat]').forEach((chat) => {
+    if (reduceMotion) return;
+    const messages = [...chat.querySelectorAll<HTMLElement>('.chat-msg')];
+
+    // Keep the card at its final height so nothing below it jumps.
+    chat.style.minHeight = `${chat.offsetHeight}px`;
+    messages.forEach((m) => (m.hidden = true));
+
+    const typingBubble = (outgoing: boolean) => {
+      const el = document.createElement('div');
+      el.setAttribute('aria-hidden', 'true');
+      el.className = `chat-pop flex gap-1 rounded-2xl px-3.5 py-3 ${
+        outgoing ? 'self-end bg-bubble' : 'self-start bg-white'
+      }`;
+      el.innerHTML = '<span class="typing-dot"></span>'.repeat(3);
+      return el;
+    };
+
+    const show = (el: HTMLElement) => {
+      el.hidden = false;
+      el.classList.add('chat-pop');
+    };
+
+    const play = async () => {
+      await sleep(400);
+      for (const msg of messages) {
+        const outgoing = msg.classList.contains('self-end');
+        const typing = typingBubble(outgoing);
+        msg.before(typing);
+        // Longer messages take a little longer to "type".
+        const length = msg.textContent?.trim().length ?? 0;
+        await sleep(Math.min(1800, Math.max(700, length * 18)));
+        typing.remove();
+        show(msg);
+        await sleep(450);
+      }
+    };
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        if (entries.some((e) => e.isIntersecting)) {
+          observer.disconnect();
+          play();
+        }
+      },
+      { threshold: 0.3 },
+    );
+    observer.observe(chat);
+  });
+</script>

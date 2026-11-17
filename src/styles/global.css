@@ -50,23 +50,24 @@
   --color-on-secondary: #ffffff;
   --color-on-error-container: #93000a;
 
-  /* Newcomer brand (light theme): teal from the logo, warm terracotta accent, cream grounds */
+  /* Newcomer brand (light theme): teal from the logo, pastel lavender accent, white and cool-gray grounds */
   --color-ink: #1b2b30;
   --color-muted: #4f6168;
-  --color-cream: #faf7f2;
-  --color-sand: #f4eee4;
-  --color-sand-strong: #fbf1e8;
-  --color-line: #ece5da;
-  --color-line-strong: #d8cfc2;
+  --color-page: #ffffff;
+  --color-mist: #f3f6f7;
+  --color-mist-strong: #f3f6f7;
+  --color-line: #e3e9eb;
+  --color-line-strong: #cdd6d9;
+  --color-logo: #1694a1;
   --color-teal: #046c75;
   --color-teal-dark: #03535a;
   --color-mint: #8ac3b3;
   --color-mint-soft: #e3f0ec;
   --color-mint-chat: #eaf3f0;
   --color-bubble: #d3ede5;
-  --color-terracotta: #b4532a;
-  --color-terracotta-soft: #c8643b;
-  --color-terracotta-tint: #fbe7da;
+  --color-lavender: #b9aee8;
+  --color-lavender-tint: #ece9fb;
+  --color-lavender-ink: #4b3f86;
 
   /* Fonts */
   --font-headline: 'Plus Jakarta Sans', sans-serif;
@@ -127,17 +128,15 @@ body {
   }
 }
 
-/* Chat mock: messages appear one after another, then a typing indicator */
-.chat-msg {
-  opacity: 0;
-  transform: translateY(10px) scale(0.98);
-  animation: chat-in 0.45s ease-out forwards;
-  animation-delay: calc(0.4s + var(--i, 0) * 0.8s);
+/* Chat mock: the script in ChatMock.astro plays the conversation (typing
+   indicator, then the message). Without JS every message is simply shown. */
+.chat-pop {
+  animation: chat-pop 0.35s ease-out both;
 }
-@keyframes chat-in {
-  to {
-    opacity: 1;
-    transform: none;
+@keyframes chat-pop {
+  from {
+    opacity: 0;
+    transform: translateY(10px) scale(0.97);
   }
 }
 .typing-dot {
@@ -178,13 +177,13 @@ body {
   box-shadow: 0 14px 30px -18px rgb(27 43 48 / 0.35);
 }
 .service-card--light:hover {
-  background-color: var(--color-sand-strong);
+  background-color: var(--color-mist-strong);
 }
 
 @media (prefers-reduced-motion: reduce) {
   .hand-underline path,
   .fade-up,
-  .chat-msg {
+  .chat-pop {
     animation: none;
     opacity: 1;
     transform: none;
